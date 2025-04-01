@@ -12,6 +12,10 @@ export const store = configureStore({
     [productApi.reducerPath]: productApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(productApi.middleware),
+    getDefaultMiddleware({
+      serializableCheck: false, // ✅ Disable serializable check in dev mode
+    }).concat(productApi.middleware),
 });
+
+// Setup API cache listeners
 setupListeners(store.dispatch);

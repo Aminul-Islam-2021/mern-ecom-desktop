@@ -4,7 +4,6 @@ import { useLocation } from "react-router-dom";
 const ProductDetails = () => {
   const location = useLocation();
   const state = location.state?.products;
-
   return (
     <div>
       <h2 className="text-center py-3">Product Details</h2>

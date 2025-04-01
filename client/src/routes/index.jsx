@@ -4,6 +4,7 @@ import Layout from "../main/layout/Layout";
 import Products from "../main/pages/Products";
 import ProductDetails from "../main/pages/ProductDetails";
 import SearchResult from "../main/pages/SearchResult";
+import CartPage from "../main/pages/CartPage";
 
 export const router = createBrowserRouter([
   {
@@ -22,6 +23,10 @@ export const router = createBrowserRouter([
       {
         path: "/search",
         element: <SearchResult />,
+      },
+      {
+        path: "/cart",
+        element: <CartPage />,
       },
     ],
   },

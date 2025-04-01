@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Card from "../components/Card";
 import { useGetProductsQuery } from "../../store/features/products/productApi";
+import { useSelector } from "react-redux";
 
 const Products = () => {
-  const { data: products, isLoading, isError, error } = useGetProductsQuery();
+  const filters = useSelector((state) => state.filters);
+  const { data: products, isLoading, isError, error } = useGetProductsQuery(filters);
   const noProductsFound = products?.product?.length === 0;
 
   return (

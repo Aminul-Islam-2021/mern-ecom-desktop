@@ -33,8 +33,10 @@ const SearchBar = () => {
 
   useEffect(() => {
     if (products?.product?.length) {
-      const matched = products.product.filter((p) =>
-        p.title.toLowerCase().startsWith(query.toLowerCase())
+      const matched = products.product.filter(
+        (p) =>
+          p.title.toLowerCase().startsWith(query.toLowerCase()) ||
+          p.tags.some((tag) => tag.toLowerCase().includes(query.toLowerCase())) // Match tags
       );
       setFilteredProducts(matched);
     } else {
@@ -52,10 +54,25 @@ const SearchBar = () => {
     }
   };
 
-  const handleSelectProduct = (productId) => {
-    navigate(`/products/${productId}`);
+  const handleSelectProduct = (productId, productData) => {
+    navigate(`/products/${productId}`, { state: { products: productData } });
     setQuery("");
     setShowSuggestions(false);
+  };
+
+  const handleKeyDown = (e) => {
+    if (!filteredProducts.length) return;
+    if (e.key === "ArrowDown") {
+      setSelectedIndex((prev) =>
+        prev < filteredProducts.length - 1 ? prev + 1 : 0
+      );
+    } else if (e.key === "ArrowUp") {
+      setSelectedIndex((prev) =>
+        prev > 0 ? prev - 1 : filteredProducts.length - 1
+      );
+    } else if (e.key === "Enter" && selectedIndex >= 0) {
+      handleSelectProduct(filteredProducts[selectedIndex]._id);
+    }
   };
 
   return (
@@ -65,6 +82,7 @@ const SearchBar = () => {
           type="text"
           value={query}
           onChange={handleChange}
+          onKeyDown={handleKeyDown}
           className="w-36 lg:w-72 pl-6 flex-grow outline-none"
           placeholder="Search..."
         />
@@ -85,7 +103,7 @@ const SearchBar = () => {
                   className={`flex items-center p-3 cursor-pointer hover:bg-gray-100 transition-all ${
                     selectedIndex === index ? "bg-gray-200" : ""
                   }`}
-                  onClick={() => handleSelectProduct(product._id)}
+                  onClick={() => handleSelectProduct(product._id, product)}
                 >
                   <img
                     src={product.images[0].secure_url}
