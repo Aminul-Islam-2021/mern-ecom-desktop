@@ -5,3 +5,36 @@
   font-weight: 400;
   font-style: normal;
 }
+
+
+@keyframes slideInFromRight {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutToLeft {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}
+
+/* Base class for the toast */
+.custom-toast {
+  animation: slideInFromRight 0.4s ease-out;
+}
+
+/* When toast unmounts */
+.custom-toast[data-state='removed'] {
+  animation: slideOutToLeft 0.4s ease-in forwards;
+}
